@@ -1,10 +1,13 @@
 import axios from "axios";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
+import UserCard from "./UserCard";
+import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const UserCrud = () => {
   const [users, setUsers] = useState([]);
   const [id, setId] = useState(null);
+  const navigate = useNavigate()
   const handleEditClick = (item, userIndex, setValues) => {
     setId(item.id);
     const selectedUser = users[userIndex];
@@ -22,6 +25,9 @@ const Header = () => {
         setUsers(newUsers);
       });
   };
+  const handleClick = (userData) => {
+    navigate("/userdetails/" + userData.id);
+  }
   useEffect(() => {
     axios
       .get("https://jsonplaceholder.typicode.com/users")
@@ -64,40 +70,40 @@ const Header = () => {
         <>
           <Form>
             <div className="min-h-screen bg-gray-100 flex justify-center items-start gap-16 p-8">
-              <div className="bg-white shadow-lg rounded-xl p-6 w-125">
-                <h2 className="text-2xl font-bold mb-6">Users</h2>
+              <div >
+                {/* <h2 className="text-2xl font-bold mb-6">Users</h2> */}
+                <ul className="space-y-4  overflow-hidden grid grid-cols-4 gap-4 h-full">
+                  {users?.map((item) => (
+                   <button onClick={()=>handleClick(item)}><UserCard data={item} userEdit={handleEditClick} userDelete={handleDeleteClick} key={item.id}/></button>
+                    // <li
+                    //   key={item.id}
+                    //   className="flex items-center justify-between border-b pb-3"
+                    // >
+                    //   <span className="font-medium">{item.name}</span>
 
-                <ul className="space-y-4">
-                  {users?.map((item, i) => (
-                    <li
-                      key={item.id}
-                      className="flex items-center justify-between border-b pb-3"
-                    >
-                      <span className="font-medium">{item.name}</span>
+                    //   <div className="flex gap-2">
+                    //     <button
+                    //       type="button"
+                    //       onClick={() => handleEditClick(item, i, setValues)}
+                    //       className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-lg"
+                    //     >
+                    //       Edit
+                    //     </button>
 
-                      <div className="flex gap-2">
-                        <button
-                          type="button"
-                          onClick={() => handleEditClick(item, i, setValues)}
-                          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded-lg"
-                        >
-                          Edit
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteClick(item)}
-                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-lg"
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </li>
+                    //     <button
+                    //       type="button"
+                    //       onClick={() => handleDeleteClick(item)}
+                    //       className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded-lg"
+                    //     >
+                    //       Delete
+                    //     </button>
+                    //   </div>
+                    // </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="bg-white shadow-lg rounded-xl p-8 w-100">
+              {/* <div className="bg-white shadow-lg rounded-xl p-8 w-100">
                 <h2 className="text-2xl font-bold mb-6 text-center">
                   {id ? "Update User" : "Add User"}
                 </h2>
@@ -124,7 +130,7 @@ const Header = () => {
                     {id ? "Update User" : "Add User"}
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </Form>
         </>
@@ -133,4 +139,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default UserCrud;
