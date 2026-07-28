@@ -22,7 +22,6 @@ const keys = Object.keys(usersData)
         }
         )
           
-        // return <h1 key={i}>{item}</h1>
         }else{
           return (<h1 key={i}>{item}-{usersData[item]}</h1>)
         }
